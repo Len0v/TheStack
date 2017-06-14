@@ -43,6 +43,8 @@ public class TheStack : MonoBehaviour {
     // Pozycja poprzedniego tile
     private Vector3 lastTilePosition;
 
+    AdManager ad;
+
     // Funckja wywołująca się po stworzeniu obiektu.
     void Start() {
         // Tworzymy tablice theStack o wielkości równej ilości cubów.
@@ -53,12 +55,13 @@ public class TheStack : MonoBehaviour {
         }
         // Do zmienej stackIndex przypisujemy ilość dzieci - 1 co da nam najniższy element
         stackIndex = transform.childCount - 1;
+        ad = new AdManager();
     }
 
     // Funkcja wywołująca się co klatkę
     void Update() {
         // Sprawdzenie czy gracz wcisnął lewy przycisk myszy
-        if(Input.GetMouseButtonDown(0)) {
+        if(Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
             // Sprawdzenie czy graczowi udało się ustawić tile
             if(PlaceTile()) {
                 // Utworzenie nowej platformy o jeden wyżej
@@ -242,8 +245,6 @@ public class TheStack : MonoBehaviour {
         Debug.Log("GameOver");
         gameOver = true;
         theStack[stackIndex].AddComponent<Rigidbody>();
+        ad.ShowRewardedAd();        
     }
 }
-
-// TODO: Move tile animation begins at the corrners, add lightning and colors.
-// TODO: UI
